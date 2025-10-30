@@ -1,0 +1,75 @@
+PROGRAM :
+<!DOCTYPE html>
+<html>
+<head>
+<title>IBM-NJ Weather Dashboard</title>
+<style>
+body{font-family: Arial; background:#e3f2fd;text-align: center; padding:
+40px; }
+#weather-box {background: white; padding:20px; border-radius:
+10px;width:320px;margin: auto; box-shadow:0010px#ccc; }
+input,button{margin:10px0; padding:8px;width:90%; }
+</style>
+</head>
+<body>
+<div id="weather-box"
+>
+<h2>IBM-NJ Weather Dashboard</h2>
+<inputtype="text"id="cityInput"placeholder="Enter city name"
+>
+<buttononclick="getWeather()">Check Weather</button>
+<pid="weatherResult"></p>
+</div>
+<script>
+async functiongetWeather() {
+const city = document.getElementById(
+"cityInput"
+).value;
+if(!city) returnalert(
+"Please enter a city name"
+);
+const apiKey = "your_api_key"
+;
+const res = awaitfetch(`https://api.openweathermap.org/data/2.5/
+weather?q=${city}&appid=${apiKey}&units=metric`);
+const data = await res.json();
+if(data.cod === "404"
+) {
+document.getElementById(
+"weatherResult"
+).innerText = "City not
+found!"
+;
+return;
+}
+document.getElementById(
+"weatherResult"
+).innerText =
+` ${data.name}:${data.main.temp}°C,${data.weather[0].description}`;
+}
+</script>
+</body>
+</html>
+3.1 API DOCUMENTATION DEMO
+1. Fetch Weather Data :
+Endpoint:
+GET /api/weather/:city
+Description: Fetches current weather data for the given city
+from the OpenWeather API.
+Response (Success):
+{
+"city":"Chennai",
+"temperature":"32°C",
+"humidity":"58%",
+"wind":"10 km/h",
+"description":"clear sky"
+}
+2. Search History :
+Endpoint: GET /api/history
+Description: Returns recently searched city list (if stored in
+MongoDB).
+3. Error Handling :
+Response (Error):
+{
+"error":"City not found or invalid API key"
+}
